@@ -16,10 +16,18 @@ const PostDetails = () => {
   useEffect(()=>{
     setLoading(true);
     try{
-        const newPosts=JSON.parse(localStorage.getItem('posts')); 
-        setPost(...newPosts.filter(post=>post.id==params.id));
-         // console.log(post);
-        setReadTime(readingTime(post.text));
+      const url=`http://localhost:3000/articles/${params.id}`;
+      const getRequest=async ()=>{
+        const options = {
+          method: 'GET',
+          headers: new Headers({'content-type': 'application/json'
+          })};
+        const data=await fetch(url,options);
+        const getPosts=await data.json();
+        setPost(getPosts);
+        //console.log(posts);
+      }  
+      getRequest();
     }
     catch (err){
         console.log(err);
@@ -37,7 +45,7 @@ const PostDetails = () => {
   return (
     <div className="details-container">
       <NavBar hideFilter={true}/><br />
-      <span className="post-topic">{post.topic}</span>
+      {post.topic!==undefined &&<span className="post-topic">{post.topic}</span>}
       <h1>{post.title}</h1>
       <div className="flex">
         <p className="flex-item">Author: {post.author} </p>

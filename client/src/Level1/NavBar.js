@@ -17,11 +17,16 @@ const NavBar=(props)=>{
     const logoutHandler=()=>{
         navigate('/login');
     }
+    const [searchText,setSearchText]=useState('');
+    const searchHandler=(e)=>{
+        setSearchText(e.target.value);
+        props.searchHandler(e.target.value);
+    }
     return (
         <>
 
             <div className='navbar-container'>
-                <input className="navbar-search" type="text" placeholder="Search posts" onChange={(e)=>props.searchHandler(e.target.value)} />
+                <input className="navbar-search" type="text" placeholder="Search posts" onChange={searchHandler} />
                 <div className="navbar-right">
                     <Link to='/profile'>
                         <img className='navbar-profile' src={profileImage} alt='profile photo'/>

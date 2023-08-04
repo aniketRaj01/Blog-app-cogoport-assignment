@@ -17,6 +17,8 @@ import AuthorList from './level2-Users/AuthorsList';
 import PostDetails from './Level1/PostDetails';
 import BestPosts from './level3/BestPosts';
 import Root from './Level1/Root';
+import TopicListPage from './level2-Users/TopicList';
+import PayToViewContent from './level4/PayToViewContent';
 const router=createBrowserRouter([
 {
   path:'/',
@@ -47,11 +49,18 @@ const router=createBrowserRouter([
     },
     {
       path:'add',
-      element:<NewPost />
+      element:<div className='container'><h1>Create new Post</h1><NewPost /></div>
     },
     {
       path:'edit/:id',
       element:<Edit />
+    },
+    {
+      path:'topics',
+      element:<TopicListPage />
+    },{
+      path:'pay',
+      element:<PayToViewContent />
     }
   ]
 },

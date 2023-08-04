@@ -53,52 +53,50 @@ const Display=()=>{
         likes:'',
         comments:'',
     });
-    useEffect(()=>{
+    //     useEffect(()=>{
+    //       const url='http://localhost:3000/articles';
+    //       const postData={title:'how are you',description:'sdajnhds sdahbda adsjn'};
       
-      // try{
-        
-      //   const getPosts=async ()=>{
-      //     const url='http://localhost:3000/articles/1';
-      //     const options = {
-      //       method: 'GET',
-      //       headers: new Headers({'content-type': 'application/json'
-      //       })
+    //       const getRequest=async (url)=>{
+    //         const options = {
+    //           method: 'GET',
+    //           headers: new Headers({'content-type': 'application/json'
+    //           })};
+    //         const data=await fetch(url,options);
+    //         const posts=await data.json();
+    //         //console.log(posts);
             
-      //     };
-      //     const data=await fetch(url,options);
-      //     const posts=await data.json();
-      //     console.log(posts);
-      //   } 
-      //   getPosts();
-
-      // }
-      // catch (err){
-      //   console.log(err);
-      // }
-      
-      
-      
-      const getPosts=async ()=>{
-            const postData={title:'title value effdssdf',description:'hsdabj dsahbsabd dhsabhjbdsa dsahv'};
-            const options = {
-                  method: 'POST',
-
-                  headers: new Headers({'content-type': 'application/json'
-                  }),
-                  body: JSON.stringify(postData)
-                  
-                  
-            };
-            const url='http://localhost:3000/articles';
-            const data=await fetch(url,options);
-            const posts=await data.json();
-            console.log(data,posts);
-            //const posts=await data.json();
-            //console.log(posts);
-          } 
-          getPosts();
-
-    },[])
+    //       }  
+    //       const postRequest=async (url,postData)=>{
+    //         const options = {
+    //               method: 'POST',
+    
+    //               headers: new Headers({'content-type': 'application/json'
+    //               }),
+    //               body: JSON.stringify(postData)
+    //         };
+    //         const data=await fetch(url,options);
+    //         const posts=await data.json();
+    //         //console.log(posts);
+         
+    //       } 
+    //       try{
+    //         const data=getRequest(url);    
+    //         console.log(data);
+    //       }
+    //       catch (err){
+    //         console.log(err);
+    //       }
+    
+    //       try{
+    //         const data=postRequest(url,postData);    
+    //         console.log(data);
+    //       }
+    //       catch (err){
+    //         console.log(err);
+    //       }
+          
+    // },[])
     const searchHandler=(searchText)=>{
         setSearch(searchText);
     }
@@ -107,6 +105,8 @@ const Display=()=>{
     }
     return (
         <>
+            <Link to='/topics'><button>Topics</button></Link>
+            <Link to='/pay'><button>Pay</button></Link>
             <NavBar searchHandler={searchHandler} sendFilter={filterHandler}/>
             <PostList searchText={search} filter={filter}/>
         </>

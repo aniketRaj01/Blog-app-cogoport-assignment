@@ -1,24 +1,27 @@
 import { Link } from "react-router-dom";
 import MyPost from "./MyPost";
+import "./ProfilePage.css";
+import { useState } from "react";
+
 const ProfilePage = () => {
-    return (
+  const [show,setShow]=useState(false);
+  return (
+    <div className="profile-container">
+      <h1 className="heading">Welcome, name!</h1>
       <div>
-        <h1>Welcome, name!</h1>
-        <div>
-          <h2>About Me</h2>
-          <p>bio</p>
-          <p>Email:</p>
-          <Link to='/editProfile'><button>Edit Profile</button></Link>
-          <Link to='/'><button>View Posts</button></Link>
-          <MyPost />
-        </div>
+        <h2 className="heading">About Me</h2>
+        <p className="paragraph">bio</p>
+        <p className="paragraph">Email:</p>
+        <Link to="/editProfile">
+          <button className="button">Edit Profile</button>
+        </Link>
+        {!show &&<button className="button" onClick={()=>setShow(true)}>My Posts</button>}
+          {show &&<button className="button" onClick={()=>setShow(false)}>Hide Posts</button>}
         
+        {show&&<MyPost />}
       </div>
-    );
-  };
-  
-  export default ProfilePage;
-  
-  
-  
-  
+    </div>
+  );
+};
+
+export default ProfilePage;

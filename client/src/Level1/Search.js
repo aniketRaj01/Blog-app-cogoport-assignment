@@ -10,7 +10,7 @@ const Search = ({ onSearch }) => {
 
   return (
     <div>
-      <input type="text" placeholder="Search by post, author, or topic" value={searchQuery} onChange={handleSearchChange} />
+      <input type="text" placeholder="Search by post, author, or topic " value={searchQuery} onChange={handleSearchChange} />
     </div>
   );
 };

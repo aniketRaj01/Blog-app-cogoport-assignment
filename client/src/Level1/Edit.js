@@ -29,8 +29,8 @@ const Edit = () => {
    }
   return (
     <div>
-        <h2>Edit Post</h2>
-        <NewPost initialValues={post}   />
+        <h2 className='container'>Edit Post</h2>
+        <NewPost initialValues={post} id={params.id}/>
     </div>
   );
 };

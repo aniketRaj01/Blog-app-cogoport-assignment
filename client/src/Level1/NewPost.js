@@ -10,7 +10,7 @@ const NewPost = (props) => {
         title: '',
         topic: '',
         image: '',
-        text: '',
+        description: '',
         author: '',
       };;
       try{
@@ -19,7 +19,7 @@ const NewPost = (props) => {
             title: props.initialValues.title,
             topic: props.initialValues.topic,
             image: props.initialValues.image,
-            text: props.initialValues.text,
+            description: props.initialValues.description,
             author: props.initialValues.author,
           }
     }
@@ -32,18 +32,34 @@ const NewPost = (props) => {
     title: yup.string().required('Title is required'),
     topic: yup.string(),
     image: yup.string(),
-    text: yup.string().required('Text is required'),
+    description: yup.string().required('description is required'),
     author: yup.string().required('Author is required'),
   });
+  const postRequest=async(method,postData)=>{
+    const options = {
+        method: method,
   
+        headers: new Headers({'content-type': 'application/json'
+        }),
+        body: JSON.stringify(postData)
+        };
+        const url='http://localhost:3000/articles'
+        const data=await fetch(url,options);
+        const posts=await data.json();
+        return posts;
+  }
   return (
     <div className='container'>
-         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={(values,{resetForm})=>{
-        console.log(values);
-        //add or edit in local storage
-        
-        resetForm();
-    }}>
+        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={(values,{resetForm})=>{
+            if(props.id===undefined||props.id===null){
+              postRequest('POST',values);
+            }
+            else{
+              postRequest('PUT',{...values,id:props.id});
+            }
+            //change this to values
+            resetForm();
+        }}>
       {({values,handleBlur,handleChange,handleSubmit,errors,touched})=>(
         <form noValidate onSubmit={handleSubmit} className="newpost-form">
             <div>
@@ -59,8 +75,8 @@ const NewPost = (props) => {
           <ErrorMessage name="image" component="div" className="newpost-error" />
         </div>
         <div>
-          <input type="text" name="text" placeholder="Text" value={values.text} onChange={handleChange} onBlur={handleBlur} className="newpost-input"/>
-          <ErrorMessage name="text" component="div" className="newpost-error"/>
+          <input type="" name="description" placeholder="Text" value={values.description} onChange={handleChange} onBlur={handleBlur} className="newpost-input"/>
+          <ErrorMessage name="description" component="div" className="newpost-error"/>
         </div>
         <div>
           <input type="text" name="author" placeholder="Author" value={values.author} onChange={handleChange} onBlur={handleBlur} className="newpost-input"/>

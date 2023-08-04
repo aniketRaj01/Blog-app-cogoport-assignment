@@ -1,7 +1,7 @@
 import PostList from '../Level1/PostList'
 const MyPost=()=>{
 
-    //my posts...
+    
     return (
         <div>
             <h2>My posts</h2>
