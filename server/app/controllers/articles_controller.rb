@@ -2,10 +2,12 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
+    render json: @article
   end
 
   def index
     @articles = Article.all
+    render json: @articles
   end
 
   def new
@@ -34,5 +36,11 @@ class ArticlesController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def destroy
+    @article = Article.find(params[:id])
+    @article.destroy
+    redirect_to articles_path
   end
 end
