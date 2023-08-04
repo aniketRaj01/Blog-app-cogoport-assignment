@@ -1,6 +1,6 @@
 import PostList from "./PostList";
 import NavBar from "./NavBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignUp from "../level2-Users/SignUp";
 import { Link } from "react-router-dom";
 
@@ -45,6 +45,7 @@ const post = [
   ];
 localStorage.setItem('posts',JSON.stringify(post));
 const Display=()=>{
+
     const [search,setSearch]=useState('');
     const [filter,setFilter]=useState({
         author:'',
@@ -52,6 +53,52 @@ const Display=()=>{
         likes:'',
         comments:'',
     });
+    useEffect(()=>{
+      
+      // try{
+        
+      //   const getPosts=async ()=>{
+      //     const url='http://localhost:3000/articles/1';
+      //     const options = {
+      //       method: 'GET',
+      //       headers: new Headers({'content-type': 'application/json'
+      //       })
+            
+      //     };
+      //     const data=await fetch(url,options);
+      //     const posts=await data.json();
+      //     console.log(posts);
+      //   } 
+      //   getPosts();
+
+      // }
+      // catch (err){
+      //   console.log(err);
+      // }
+      
+      
+      
+      const getPosts=async ()=>{
+            const postData={title:'title value effdssdf',description:'hsdabj dsahbsabd dhsabhjbdsa dsahv'};
+            const options = {
+                  method: 'POST',
+
+                  headers: new Headers({'content-type': 'application/json'
+                  }),
+                  body: JSON.stringify(postData)
+                  
+                  
+            };
+            const url='http://localhost:3000/articles';
+            const data=await fetch(url,options);
+            const posts=await data.json();
+            console.log(data,posts);
+            //const posts=await data.json();
+            //console.log(posts);
+          } 
+          getPosts();
+
+    },[])
     const searchHandler=(searchText)=>{
         setSearch(searchText);
     }
