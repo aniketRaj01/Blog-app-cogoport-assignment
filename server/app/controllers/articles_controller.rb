@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
-
+    @article.user = User.first
     if @article.save
       render json: @article, status: :created
     else
@@ -42,7 +42,6 @@ class ArticlesController < ApplicationController
   end
 
   private
-
   def article_params
     params.require(:article).permit(:title, :description)
   end
