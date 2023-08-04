@@ -1,5 +1,7 @@
 class ArticlesController < ApplicationController
 
+  
+
   def show
     @article = Article.find(params[:id])
     render json: @article
@@ -21,26 +23,38 @@ class ArticlesController < ApplicationController
   def update
     @article = Article.find(params[:id])
     if @article.update(params.require(:article).permit(:title, :description))
-      flash[:notice] = "Article was updated successfully."
-      redirect_to @article
+      render json: @article, status: :ok
     else
-      render 'edit'
+      render json: {errors: @article.errors.full_messages}
     end
   end
-   
+  
+  protect_from_forgery with: :null_session # For APIs, we disable CSRF protection
+
   def create
-    @article = Article.new(params.require(:article).permit(:title, :description))
+    @article = Article.new(article_params)
+
     if @article.save
-      flash[:notice] = "Article was created successfully."
-      redirect_to @article 
+      render json: @article, status: :created
     else
-      render 'new'
+      render json: { errors: @article.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+  private
+
+  def article_params
+    params.require(:article).permit(:title, :description)
+  end
+  # config/application.rb or config/initializers/cors.rb
+  
+  public
   def destroy
     @article = Article.find(params[:id])
-    @article.destroy
-    redirect_to articles_path
+    if @article.destroy
+      render json: {msg: "given article deleted succesfully"}, status: :ok
+    else
+      render json: {errors: @article.errors.full_messages}, status: :no_content
+    end
   end
 end
