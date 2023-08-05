@@ -4,12 +4,16 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
-    render json: @article
+    render json: {"article": @article, likes: @article.likes, comments: @article.comments}
   end
 
   def index
     @articles = Article.all
-    render json: @articles
+    article = []
+    @articles.each do |obj|
+    article << {"article": obj, "likes": obj.likes, "comments": obj.comments}
+    end
+    render json: article
   end
 
   def new
@@ -33,7 +37,6 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
-    @article.user = User.first
     if @article.save
       render json: @article, status: :created
     else
@@ -41,13 +44,6 @@ class ArticlesController < ApplicationController
     end
   end
 
-  private
-  def article_params
-    params.require(:article).permit(:title, :description)
-  end
-  # config/application.rb or config/initializers/cors.rb
-  
-  public
   def destroy
     @article = Article.find(params[:id])
     if @article.destroy
@@ -56,4 +52,10 @@ class ArticlesController < ApplicationController
       render json: {errors: @article.errors.full_messages}, status: :no_content
     end
   end
+
+  private
+  def article_params
+    params.require(:article).permit(:title, :description, :topic, :user_id)
+  end
+  # config/application.rb or config/initializers/cors.rb
 end
