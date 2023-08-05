@@ -25,7 +25,11 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    render json: @users
+    user_list = []
+    @users.each do |user|
+      user_list << {"author": user, "followers": user.followers, "followings": user.following}
+    end
+    render json: user_list
   end
 
   private
