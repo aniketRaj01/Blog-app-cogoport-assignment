@@ -1,7 +1,5 @@
 class ArticlesController < ApplicationController
-
-  
-
+  before_action :require_authentication
   def show
     @article = Article.find(params[:id])
     render json: {"article": @article, likes: @article.likes, comments: @article.comments}
@@ -26,6 +24,9 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
+    if @article.user != @current_user
+      return render json: {msg: "you are not author of article"}
+    end
     if @article.update(params.require(:article).permit(:title, :description))
       render json: @article, status: :ok
     else
@@ -37,6 +38,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @article.user = @current_user
     if @article.save
       render json: @article, status: :created
     else
@@ -46,6 +48,9 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article = Article.find(params[:id])
+    if @article.user != @current_user
+      return render json: {msg: "you are not author of article"}
+    end
     if @article.destroy
       render json: {msg: "given article deleted succesfully"}, status: :ok
     else
@@ -55,7 +60,20 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-    params.require(:article).permit(:title, :description, :topic, :user_id)
+    params.require(:article).permit(:title, :description, :topic)
+  end
+
+  def require_authentication
+    header = request.headers['Authorization']
+    token = header.split(' ').last if header
+
+    begin
+      decoded_token = JWT.decode(token, 'your_secret_key', true, algorithm: 'HS256')
+      render json: {error: "invalid token"} if !decoded_token[0]['user_id']
+      @current_user = User.find(decoded_token[0]['user_id'])
+    rescue JWT::DecodeError
+      render json: { error: header }, status: :unauthorized
+    end
   end
   # config/application.rb or config/initializers/cors.rb
 end

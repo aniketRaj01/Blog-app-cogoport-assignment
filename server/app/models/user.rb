@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  before_save { self.email = email.downcase }
   has_many :articles
   has_many :comments
   has_many :followers
