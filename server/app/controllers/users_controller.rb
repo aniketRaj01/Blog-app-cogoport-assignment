@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    render json: {user: @user, articles: @user.articles}
+    render json: {user: @user, articles: @user.articles, followers: @user.followers, following: @user.following, viewed_article: @user.viewed_posts, subscription: @user.subscriptions.last}
   end
 
   def update
@@ -43,6 +43,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:username, :email, :password_digest)
   end
+
   def require_authentication
     header = request.headers['Authorization']
     token = header.split(' ').last if header
